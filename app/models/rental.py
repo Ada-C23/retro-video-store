@@ -20,6 +20,9 @@ class Rental(db.Model):
             # videos_checked_out_count=self.postal_code,
             available_inventory=self.video.get_available_count(),
         )
+    
+    def return_rental(self):
+        self.status = "AVAILABLE"
 
     @classmethod
     def from_dict(cls, data):

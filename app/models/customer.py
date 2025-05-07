@@ -25,6 +25,22 @@ class Customer(db.Model):
         self.postal_code = data["postal_code"]
         self.phone = data["phone"]
 
+    def has_active_rental(self, video_id):
+        try:
+            _ = self.get_active_rental_by_video_id(video_id)
+        except ValueError:
+            return False
+
+        return True
+
+    def get_active_rental_by_video_id(self, video_id):
+        for rental in self.rentals:
+            if rental.video_id == video_id and rental.status == "RENTED":
+                return rental
+            
+        raise ValueError(f"No rental found for video_id {video_id}")
+
+
     @classmethod
     def from_dict(cls, data):
         return Customer(
